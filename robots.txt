@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /gallery-thumbs/
+Disallow: /new-gallery/
+Allow: /
