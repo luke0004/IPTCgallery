@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <?php 
-	if(isset($headline)) echo '<title>Photography ' . $headline . '</title>' . "\n"; 
+	if(isset($headline)) echo '<title>Photography ' . htmlspecialchars($headline, ENT_QUOTES, 'UTF-8') . '</title>' . "\n"; 
 	else echo '<title>Photography</title>' . "\n";
 ?>
 

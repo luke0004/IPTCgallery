@@ -27,7 +27,13 @@ if ($sortByImageName) {
 
 <!-- Read IPTC data from photos -->
 <?php
-	$image = $_GET['image'];
+	$image = $_GET['image'] ?? '';
+	$realPath = realpath($image);
+	$allowedDir = realpath($imageFolder);
+	if (!$realPath || strpos($realPath, $allowedDir) !== 0 || !in_array($image, $images)) {
+		http_response_code(404);
+		exit('Image not found');
+	}
 	$size = getimagesize($image, $info);
     
 	if(isset($info['APP13'])) {
@@ -54,31 +60,31 @@ if ($sortByImageName) {
 <html>
 	<div class="container">
 		<div class="single-pic">
-			<img src="<?php echo $image; ?>" alt="<?php echo $caption; ?>">
+			<img src="<?php echo htmlspecialchars($image, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($caption ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 			<div class="overlay-navigation">
 				<?php
 					$current_image_pos = array_search($image, $sortedImages);
 					if (!$current_image_pos == 0) {
-						echo '<div class="overlay-navigation-left"><a href="picture.php?image=' . $sortedImages[($current_image_pos-1)] . '">
+						echo '<div class="overlay-navigation-left"><a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos-1)], ENT_QUOTES, 'UTF-8') . '">
 						<img src ="../gallery-thumbs/arrow-left.png"></a></div>';	
 					}		
 					if (isset($sortedImages[($current_image_pos+1)])) {
-						echo '<div class="overlay-navigation-right"><a href="picture.php?image=' . $sortedImages[($current_image_pos+1)] . '">
+						echo '<div class="overlay-navigation-right"><a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos+1)], ENT_QUOTES, 'UTF-8') . '">
 						<img src ="../gallery-thumbs/arrow-right.png"></a></div>';
 					}
 				?>
 			</div>
 		</div>
 		<div class="single-pic-description">
-			<?php echo $caption; ?>
+			<?php echo htmlspecialchars($caption ?? '', ENT_QUOTES, 'UTF-8'); ?>
 		</div>
 		<div class="gallery-navigation">
 			<?php
 				$current_image_pos = array_search($image, $sortedImages);
 				if (!$current_image_pos == 0) {
 					echo '<div class="navigation-left">';
-					echo '<a href="picture.php?image=' . $sortedImages[($current_image_pos-1)] . '"><img src ="../gallery-thumbs/small-arrow-left.png"></a>';	
-					// echo '<a href="picture.php?image=' . $sortedImages[($current_image_pos-1)] . '">' . '<' . '</a>' . ' – ';
+					echo '<a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos-1)], ENT_QUOTES, 'UTF-8') . '"><img src ="../gallery-thumbs/small-arrow-left.png"></a>';
+					// echo '<a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos-1)], ENT_QUOTES, 'UTF-8') . '">' . '<' . '</a>' . ' – ';
 					echo '</div>';
 				}		
 				echo '<div class="navigation-index">';
@@ -87,8 +93,8 @@ if ($sortByImageName) {
 				// echo '<a href="index.php">ALL</a>';	
 				if (isset($sortedImages[($current_image_pos+1)])) {
 					echo '<div class="navigation-right">';
-					echo '<a href="picture.php?image=' . $sortedImages[($current_image_pos+1)] . '">' . '<img src ="../gallery-thumbs/small-arrow-right.png">' . '</a>';
-					// echo ' – ' . '<a href="picture.php?image=' . $sortedImages[($current_image_pos+1)] . '">' . '>' . '</a>';
+					echo '<a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos+1)], ENT_QUOTES, 'UTF-8') . '">' . '<img src ="../gallery-thumbs/small-arrow-right.png">' . '</a>';
+					// echo ' – ' . '<a href="picture.php?image=' . htmlspecialchars($sortedImages[($current_image_pos+1)], ENT_QUOTES, 'UTF-8') . '">' . '>' . '</a>';
 					echo '</div>';
 				}
 			?>

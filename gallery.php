@@ -81,8 +81,8 @@ if ($sortByImageName) {
 			}
 		
 			echo '<div class="thumbnail">';
-				echo '<a href="picture.php?image=' . $image . '">';
-					echo'<img src="' . "t_" . $imageFolder . "t_" . $fname_image . '.jpg' . '" alt="' . $caption . '" title="' . $caption . '">';
+				echo '<a href="picture.php?image=' . htmlspecialchars($image, ENT_QUOTES, 'UTF-8') . '">';
+					echo'<img src="' . htmlspecialchars("t_" . $imageFolder . "t_" . $fname_image . '.jpg', ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($caption ?? '', ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars($caption ?? '', ENT_QUOTES, 'UTF-8') . '">';
 				echo '</a>';
 				echo '<div class="thumbnail-description">';
 					// echo $caption;
